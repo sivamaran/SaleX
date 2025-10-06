@@ -418,6 +418,26 @@ async def run_pipeline_async(orch, icp_data, selected_scrapers, icp_identifier, 
                         "throughput_per_second": performance_metrics.get('throughput_per_second', 0),
                         "unified_leads_stored": unified_storage.get('success_count', 0)
                     }
+                #---------adding twitter reddit quora scrapers ----------
+                elif scraper == 'twitter':
+                    response_data["scraper_results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
+                elif scraper == 'reddit':
+                    response_data["scraper_results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
+                elif scraper == 'quora':
+                    response_data["scraper_results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
+                #------------------------------------------------------------
         
         # Count successful scrapers (excluding lead_filtering and contact_enhancement)
         actual_successful_scrapers = len([r for r in scraper_results.items() 
