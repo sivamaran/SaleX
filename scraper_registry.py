@@ -52,6 +52,24 @@ PROMPT_BLOCKS: Dict[str, str] = {
         '- Prefer: (site:facebook.com/profile.php OR site:facebook.com/pages OR site:facebook.com/groups OR site:facebook.com/events)\n'
         '- Use operators: intitle:, quotes for exact roles, OR for multiple personas.\n'
     ),
+    'twitter': (
+        'STRICT: Every query MUST target Twitter/X profiles or posts only.\n'
+        '- Always include: site:twitter.com OR site:x.com\n'
+        '- Prefer: (site:twitter.com/* OR site:x.com/*)\n'
+        '- Use operators: intitle:, quotes for exact roles, OR for multiple personas.\n'
+    ),
+    'reddit': (
+        'STRICT: Every query MUST target Reddit posts, users, or subreddits only.\n'
+        '- Always include: site:reddit.com\n'
+        '- Prefer: (site:reddit.com/r/ OR site:reddit.com/user/)\n'
+        '- Use operators: intitle:, quotes, OR as needed.\n'
+    ),
+    'quora': (
+        'STRICT: Every query MUST target Quora profiles or answers only.\n'
+        '- Always include: site:quora.com\n'
+        '- Prefer: (site:quora.com/profile/ OR site:quora.com/*)\n'
+        '- Use operators: intitle:, quotes for topics, OR for multiple subjects.\n'
+    ),
     'company_directory': (
         'STRICT: Every query MUST target business directory websites only.\n'
         '- Always include business directory sites: site:thomasnet.com OR site:indiamart.com OR site:kompass.com OR site:yellowpages.com OR site:yelp.com OR site:crunchbase.com OR site:opencorporates.com\n'
@@ -72,6 +90,9 @@ SITE_FILTERS: Dict[str, str] = {
     'linkedin': 'site:linkedin.com (site:linkedin.com/in OR site:linkedin.com/company OR site:linkedin.com/posts OR site:linkedin.com/newsletters) ',
     'youtube': 'site:youtube.com (site:youtube.com/@ OR site:youtube.com/channel) ',
     'facebook': 'site:facebook.com (site:facebook.com/profile.php OR site:facebook.com/pages OR site:facebook.com/groups OR site:facebook.com/events) ',
+    'twitter': 'site:twitter.com OR site:x.com ',
+    'reddit': 'site:reddit.com (site:reddit.com/r/ OR site:reddit.com/user/) ',
+    'quora': 'site:quora.com ',
     'company_directory': 'site:thomasnet.com OR site:indiamart.com OR site:kompass.com OR site:yellowpages.com OR site:yelp.com OR site:crunchbase.com OR site:opencorporates.com OR site:manta.com OR site:dexknows.com OR site:superpages.com ',
     # web_scraper intentionally omitted from platform site filters
 }
@@ -119,6 +140,27 @@ SCRAPERS: Dict[str, ScraperMeta] = {
         site_filter=SITE_FILTERS['facebook'],
         prompt_block=PROMPT_BLOCKS['facebook'],
         description='Facebook profiles, pages, and posts'
+    ),
+    'twitter': ScraperMeta(
+        name='twitter',
+        url_type='twitter',
+        site_filter=SITE_FILTERS['twitter'],
+        prompt_block=PROMPT_BLOCKS['twitter'],
+        description='Twitter/X profiles and posts'
+    ),
+    'reddit': ScraperMeta(
+        name='reddit',
+        url_type='reddit',
+        site_filter=SITE_FILTERS['reddit'],
+        prompt_block=PROMPT_BLOCKS['reddit'],
+        description='Reddit posts and user profiles'
+    ),
+    'quora': ScraperMeta(
+        name='quora',
+        url_type='quora',
+        site_filter=SITE_FILTERS['quora'],
+        prompt_block=PROMPT_BLOCKS['quora'],
+        description='Quora profiles and answers'
     ),
 }
 
