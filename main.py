@@ -1505,6 +1505,24 @@ class LeadGenerationOrchestrator:
                         "duplicate_leads": unified_storage.get('duplicate_count', 0),
                         "failed_leads": unified_storage.get('failure_count', 0)
                     }
+                elif scraper == 'twitter':
+                    report_data["results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
+                elif scraper == 'reddit':
+                    report_data["results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
+                elif scraper == 'quora':
+                    report_data["results_summary"][scraper] = {
+                        "status": "success" if result.get('success') else "failed",
+                        "urls_processed": result.get('summary', {}).get('urls_processed', 0),
+                        "results_count": result.get('summary', {}).get('results_count', 0)
+                    }
                 # COMMENTED OUT - crl.py removed from flow
                 # elif scraper == 'web_crawler':
                 #     if result.get('success'):
