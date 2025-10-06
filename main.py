@@ -47,6 +47,13 @@ from scraper_registry import (
     get_prompt_block,
     get_url_type_map,
 )
+#------------twitter reddit quora scrapers -------------------
+#---------importing twitter, reddit, quora scrapers ----------
+from twitter_scraper.twitter_test import run_test as run_twitter_scraper
+from reddit_scraper.reddit_test import run_test as run_reddit_scraper  
+from quora_scraper.quora_test import run_test as run_quora_scraper
+#------------------------------------------------------------
+
 
 # Import Gemini AI (assuming it's available)
 try:
@@ -1290,7 +1297,102 @@ class LeadGenerationOrchestrator:
             except Exception as e:
                 logger.error(f"❌ Facebook scraper failed: {e}")
                 results['facebook'] = {'error': str(e)}
+        #---------adding twitter reddit quora scrapers ----------
+        # Run Twitter scraper
+        if 'twitter' in selected_scrapers and classified_urls.get('twitter'):
+            logger.info("🐦 Running Twitter scraper...")
+            try:
+                twitter_urls = classified_urls['twitter']
+                random.shuffle(twitter_urls)
+                twitter_urls = twitter_urls[:5]  # Limit to 5 URLs
+                
+                if twitter_urls:
+                    logger.info(f"Processing {len(twitter_urls)} Twitter URLs...")
+                    twitter_results = await run_twitter_scraper(
+                        urls=twitter_urls,
+                        headless=True
+                    )
+                    results['twitter'] = {
+                        'success': True,
+                        'data': twitter_results,
+                        'summary': {
+                            'urls_processed': len(twitter_urls),
+                            'results_count': len(twitter_results) if isinstance(twitter_results, list) else 0
+                        }
+                    }
+                    logger.info(f"✅ Twitter scraper completed: {len(twitter_urls)} URLs processed")
+                else:
+                    logger.warning("No Twitter URLs found")
+                    results['twitter'] = {'success': False, 'error': 'No URLs provided'}
+                    
+            except Exception as e:
+                logger.error(f"❌ Twitter scraper failed: {e}")
+                results['twitter'] = {'success': False, 'error': str(e)}
 
+        # Run Reddit scraper  
+        if 'reddit' in selected_scrapers and classified_urls.get('reddit'):
+            logger.info("🔴 Running Reddit scraper...")
+            try:
+                reddit_urls = classified_urls['reddit']
+                random.shuffle(reddit_urls)
+                reddit_urls = reddit_urls[:5]  # Limit to 5 URLs
+                
+                if reddit_urls:
+                    logger.info(f"Processing {len(reddit_urls)} Reddit URLs...")
+                    reddit_results = await run_reddit_scraper(
+                        urls=reddit_urls,
+                        headless=True
+                    )
+                    results['reddit'] = {
+                        'success': True,
+                        'data': reddit_results,
+                        'summary': {
+                            'urls_processed': len(reddit_urls),
+                            'results_count': len(reddit_results) if isinstance(reddit_results, list) else 0
+                        }
+                    }
+                    logger.info(f"✅ Reddit scraper completed: {len(reddit_urls)} URLs processed")
+                else:
+                    logger.warning("No Reddit URLs found")
+                    results['reddit'] = {'success': False, 'error': 'No URLs provided'}
+                    
+            except Exception as e:
+                logger.error(f"❌ Reddit scraper failed: {e}")
+                results['reddit'] = {'success': False, 'error': str(e)}
+
+        # Run Quora scraper
+        if 'quora' in selected_scrapers and classified_urls.get('quora'):
+            logger.info("🟠 Running Quora scraper...")
+            try:
+                quora_urls = classified_urls['quora']
+                random.shuffle(quora_urls)
+                quora_urls = quora_urls[:5]  # Limit to 5 URLs
+                
+                if quora_urls:
+                    logger.info(f"Processing {len(quora_urls)} Quora URLs...")
+                    quora_results = await run_quora_scraper(
+                        urls=quora_urls,
+                        headless=True
+                    )
+                    results['quora'] = {
+                        'success': True,
+                        'data': quora_results,
+                        'summary': {
+                            'urls_processed': len(quora_urls),
+                            'results_count': len(quora_results) if isinstance(quora_results, list) else 0
+                        }
+                    }
+                    logger.info(f"✅ Quora scraper completed: {len(quora_urls)} URLs processed")
+                else:
+                    logger.warning("No Quora URLs found")
+                    results['quora'] = {'success': False, 'error': 'No URLs provided'}
+                    
+            except Exception as e:
+                logger.error(f"❌ Quora scraper failed: {e}")
+                results['quora'] = {'success': False, 'error': str(e)}
+        #------------------------------------------------------------
+
+        #------------twitter reddit quora scrapers -------------------
         return results
     
     def generate_final_report(self, icp_data: Dict[str, Any], selected_scrapers: List[str], 
