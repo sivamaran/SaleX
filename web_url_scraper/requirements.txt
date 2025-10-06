@@ -1,0 +1,9 @@
+certifi==2025.8.3
+charset-normalizer==3.4.2
+dnspython==2.7.0
+dotenv==0.9.9
+idna==3.10
+pymongo==4.13.2
+python-dotenv==1.1.1
+requests==2.32.4
+urllib3==2.5.0

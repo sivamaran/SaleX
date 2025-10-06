@@ -1,0 +1,125 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+insta-venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+test_outputs/
+full_test/
+network_analysis/
+*.json
+*.txt
+*.log
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+*.mov
+
+# Browser automation
+playwright-report/
+test-results/
+playwright/.cache/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# Pyre type checker
+.pyre/
+
+# Scraped data (keep structure but ignore content)
+test_outputs/*
+!test_outputs/.gitkeep
+full_test/*
+!full_test/.gitkeep
+network_analysis/*
+!network_analysis/.gitkeep
+
+# Keep some example files but ignore most outputs
+*.json
+!example_*.json
+!sample_*.json 
