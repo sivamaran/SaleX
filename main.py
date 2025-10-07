@@ -1302,7 +1302,10 @@ class LeadGenerationOrchestrator:
             except Exception as e:
                 logger.error(f"❌ Facebook scraper failed: {e}")
                 results['facebook'] = {'error': str(e)}
+        
+        
         #---------adding twitter reddit quora scrapers ----------
+              #---------adding twitter reddit quora scrapers ----------
         # Run Twitter scraper
         if 'twitter' in selected_scrapers and classified_urls.get('twitter'):
             logger.info("🐦 Running Twitter scraper...")
@@ -1317,15 +1320,39 @@ class LeadGenerationOrchestrator:
                         urls=twitter_urls,
                         headless=True
                     )
-                    results['twitter'] = {
-                        'success': True,
-                        'data': twitter_results,
-                        'summary': {
-                            'urls_processed': len(twitter_urls),
-                            'results_count': len(twitter_results) if isinstance(twitter_results, list) else 0
-                        }
-                    }
-                    logger.info(f"✅ Twitter scraper completed: {len(twitter_urls)} URLs processed")
+                    
+                    # Store Twitter results directly in unified collection
+                    if twitter_results:
+                        try:
+                            unified_stats = self.mongodb_manager.insert_batch_unified_leads(twitter_results)
+                            
+                            results['twitter'] = {
+                                'success': True,
+                                'data': twitter_results,
+                                'unified_storage': unified_stats,
+                                'summary': {
+                                    'urls_processed': len(twitter_urls),
+                                    'results_count': len(twitter_results),
+                                    'leads_stored': unified_stats['success_count']
+                                }
+                            }
+                            
+                            logger.info(f"✅ Twitter scraper completed: {len(twitter_urls)} URLs processed")
+                            logger.info(f"✅ Twitter leads stored: {unified_stats['success_count']} leads")
+                            
+                        except Exception as e:
+                            logger.error(f"❌ Error storing Twitter leads: {e}")
+                            results['twitter'] = {
+                                'success': True,
+                                'data': twitter_results,
+                                'storage_error': str(e),
+                                'summary': {
+                                    'urls_processed': len(twitter_urls),
+                                    'results_count': len(twitter_results)
+                                }
+                            }
+                    else:
+                        results['twitter'] = {'success': False, 'error': 'No results returned'}
                 else:
                     logger.warning("No Twitter URLs found")
                     results['twitter'] = {'success': False, 'error': 'No URLs provided'}
@@ -1344,19 +1371,42 @@ class LeadGenerationOrchestrator:
                 
                 if reddit_urls:
                     logger.info(f"Processing {len(reddit_urls)} Reddit URLs...")
-                    reddit_results = await run_reddit_scraper(
+                    reddit_results = await reddit.main(
                         urls=reddit_urls,
                         headless=True
                     )
-                    results['reddit'] = {
-                        'success': True,
-                        'data': reddit_results,
-                        'summary': {
-                            'urls_processed': len(reddit_urls),
-                            'results_count': len(reddit_results) if isinstance(reddit_results, list) else 0
-                        }
-                    }
-                    logger.info(f"✅ Reddit scraper completed: {len(reddit_urls)} URLs processed")
+                    
+                    if reddit_results:
+                        try:
+                            unified_stats = self.mongodb_manager.insert_batch_unified_leads(reddit_results)
+                            
+                            results['reddit'] = {
+                                'success': True,
+                                'data': reddit_results,
+                                'unified_storage': unified_stats,
+                                'summary': {
+                                    'urls_processed': len(reddit_urls),
+                                    'results_count': len(reddit_results),
+                                    'leads_stored': unified_stats['success_count']
+                                }
+                            }
+                            
+                            logger.info(f"✅ Reddit scraper completed: {len(reddit_urls)} URLs processed")
+                            logger.info(f"✅ Reddit leads stored: {unified_stats['success_count']} leads")
+                            
+                        except Exception as e:
+                            logger.error(f"❌ Error storing Reddit leads: {e}")
+                            results['reddit'] = {
+                                'success': True,
+                                'data': reddit_results,
+                                'storage_error': str(e),
+                                'summary': {
+                                    'urls_processed': len(reddit_urls),
+                                    'results_count': len(reddit_results)
+                                }
+                            }
+                    else:
+                        results['reddit'] = {'success': False, 'error': 'No results returned'}
                 else:
                     logger.warning("No Reddit URLs found")
                     results['reddit'] = {'success': False, 'error': 'No URLs provided'}
@@ -1375,19 +1425,42 @@ class LeadGenerationOrchestrator:
                 
                 if quora_urls:
                     logger.info(f"Processing {len(quora_urls)} Quora URLs...")
-                    quora_results = await run_quora_scraper(
+                    quora_results = await quora.main(
                         urls=quora_urls,
                         headless=True
                     )
-                    results['quora'] = {
-                        'success': True,
-                        'data': quora_results,
-                        'summary': {
-                            'urls_processed': len(quora_urls),
-                            'results_count': len(quora_results) if isinstance(quora_results, list) else 0
-                        }
-                    }
-                    logger.info(f"✅ Quora scraper completed: {len(quora_urls)} URLs processed")
+                    
+                    if quora_results:
+                        try:
+                            unified_stats = self.mongodb_manager.insert_batch_unified_leads(quora_results)
+                            
+                            results['quora'] = {
+                                'success': True,
+                                'data': quora_results,
+                                'unified_storage': unified_stats,
+                                'summary': {
+                                    'urls_processed': len(quora_urls),
+                                    'results_count': len(quora_results),
+                                    'leads_stored': unified_stats['success_count']
+                                }
+                            }
+                            
+                            logger.info(f"✅ Quora scraper completed: {len(quora_urls)} URLs processed")
+                            logger.info(f"✅ Quora leads stored: {unified_stats['success_count']} leads")
+                            
+                        except Exception as e:
+                            logger.error(f"❌ Error storing Quora leads: {e}")
+                            results['quora'] = {
+                                'success': True,
+                                'data': quora_results,
+                                'storage_error': str(e),
+                                'summary': {
+                                    'urls_processed': len(quora_urls),
+                                    'results_count': len(quora_results)
+                                }
+                            }
+                    else:
+                        results['quora'] = {'success': False, 'error': 'No results returned'}
                 else:
                     logger.warning("No Quora URLs found")
                     results['quora'] = {'success': False, 'error': 'No URLs provided'}
@@ -1396,6 +1469,10 @@ class LeadGenerationOrchestrator:
                 logger.error(f"❌ Quora scraper failed: {e}")
                 results['quora'] = {'success': False, 'error': str(e)}
         #------------------------------------------------------------
+
+        
+                
+        
 
         #------------twitter reddit quora scrapers -------------------
         return results
