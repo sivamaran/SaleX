@@ -11,6 +11,8 @@ Flow:
 5. Classify URLs and route to appropriate scrapers
 """
 
+
+
 import asyncio
 import json
 import os
@@ -23,7 +25,10 @@ import logging
 import re
 import random
 # Add current directory to path for imports
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+#sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# This adds your project's root folder to the list of places Python looks for modules
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 
 # Import scrapers
 from web_url_scraper.main import main as web_url_scraper_main, initialize_application
@@ -49,9 +54,9 @@ from scraper_registry import (
 )
 #------------twitter reddit quora scrapers -------------------
 #---------importing twitter, reddit, quora scrapers ----------
-from twitter_scraper.twitter_test import run_test as run_twitter_scraper
-from reddit_scraper.reddit_test import run_test as run_reddit_scraper  
-from quora_scraper.quora_test import run_test as run_quora_scraper
+from twitter_scraper.scrapers import twitter
+from reddit_scraper.scrapers import reddit
+from quora_scraper.scrapers import quora
 #------------------------------------------------------------
 
 
@@ -1308,7 +1313,7 @@ class LeadGenerationOrchestrator:
                 
                 if twitter_urls:
                     logger.info(f"Processing {len(twitter_urls)} Twitter URLs...")
-                    twitter_results = await run_twitter_scraper(
+                    twitter_results = await twitter.main(
                         urls=twitter_urls,
                         headless=True
                     )
