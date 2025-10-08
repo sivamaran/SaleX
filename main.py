@@ -54,9 +54,9 @@ from scraper_registry import (
 )
 #------------twitter reddit quora scrapers -------------------
 #---------importing twitter, reddit, quora scrapers ----------
-from twitter_scraper.scrapers import twitter
-from reddit_scraper.scrapers import reddit
-from quora_scraper.scrapers import quora
+from twitter_scraper.scrapers.twitter import main as twitter_main
+from reddit_scraper.scrapers.reddit import main as reddit_main
+from quora_scraper.scrapers.quora import main as quora_main
 #------------------------------------------------------------
 
 
@@ -1316,7 +1316,7 @@ class LeadGenerationOrchestrator:
                 
                 if twitter_urls:
                     logger.info(f"Processing {len(twitter_urls)} Twitter URLs...")
-                    twitter_results = await twitter.main(
+                    twitter_results = await twitter_main(
                         urls=twitter_urls,
                         headless=True
                     )
@@ -1371,7 +1371,7 @@ class LeadGenerationOrchestrator:
                 
                 if reddit_urls:
                     logger.info(f"Processing {len(reddit_urls)} Reddit URLs...")
-                    reddit_results = await reddit.main(
+                    reddit_results = await reddit_main(
                         urls=reddit_urls,
                         headless=True
                     )
@@ -1425,7 +1425,7 @@ class LeadGenerationOrchestrator:
                 
                 if quora_urls:
                     logger.info(f"Processing {len(quora_urls)} Quora URLs...")
-                    quora_results = await quora.main(
+                    quora_results = await quora_main(
                         urls=quora_urls,
                         headless=True
                     )

@@ -1,4 +1,6 @@
 .env
+
+find_twitter_leads.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

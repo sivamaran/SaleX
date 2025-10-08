@@ -211,11 +211,12 @@ async def run_pipeline_async(orch, icp_data, selected_scrapers, icp_identifier, 
             queries = await orch.generate_platform_queries(icp_data, platform_override)
         else:
             queries = await orch.generate_search_queries(icp_data, selected_scrapers)
-        
+
         if not queries:
             raise Exception("No search queries were generated")
         
         logger.info(f"✅ Generated {len(queries)} search queries")
+        
         
         # Step 3: Collect URLs using web_url_scraper
         logger.info("🔍 Step 3: Collecting URLs...")
@@ -1000,7 +1001,7 @@ def get_system_status():
             "success": False,
             "error": str(e)
         }), 500
-
+ 
 @app.route('/api/urls/available', methods=['GET'])
 def get_available_urls():
     """Get count of available unprocessed URLs by type"""
